@@ -107,13 +107,13 @@ _start:
 
   ; dup2(<conn>, STDOUT_FILENO)
   mov ecx, 0x01     ; STDOUT_FILENO
-  mov ebx, eax      ; <conn>
+  mov ebx, esi      ; <conn>
   mov eax, 0x3f     ; dup2
   int 0x80          ; Interrupt
 
   ; dup2(<conn>, STDIN_FILENO)
   mov ecx, 0x02     ; STDERR_FILENO
-  mov ebx, eax      ; <conn>
+  mov ebx, esi      ; <conn>
   mov eax, 0x3f     ; dup2
   int 0x80          ; Interrupt.
 
