@@ -48,11 +48,11 @@ int main() {
     '\0'
   };
 
-  // Creating an IPV4 AF_INET socket.
-  sock = socket(AF_INET, SOCK_STREAM, 0);
+  // Creating an IPV4 PF_INET socket.
+  sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
   // Preparing listenning address.
-  local.sin_family = AF_INET;
+  local.sin_family = PF_INET;
   local.sin_port = htons(PORT);
   local.sin_addr.s_addr = (REMOTE_IP == INADDR_ANY) ? INADDR_ANY : inet_addr(REMOTE_IP);
 
