@@ -20,14 +20,18 @@
 #define SHELL "/system/bin/sh\0"
 
 int main() {
-  setuid(0);
-  setgid(0);
+
   char *args[] = { SHELL, 0 };
   char *env[] = {
     "LD_LIBRARY_PATH=/system/lib",
     "PATH=/sbin:/system/sbin:/system/bin:/system/xbin",
     0
   };
+
+  setuid(0);
+  setgid(0);
+
   execve(args[0], args, env);
+
   return 0;
 }
